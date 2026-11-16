@@ -1,0 +1,2231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VocabMaster - Present Simple & Present Continuous Practice</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                        },
+                        indigo: {
+                            50: '#EEF2FF',
+                            100: '#E0E7FF',
+                            200: '#C7D2FE',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                            800: '#3730A3',
+                            900: '#312E81',
+                        },
+                        emerald: {
+                            50: '#ECFDF5',
+                            100: '#D1FAE5',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        amber: {
+                            50: '#FFFBEB',
+                            100: '#FEF3C7',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                        },
+                        rose: {
+                            50: '#FFF1F2',
+                            100: '#FFE4E6',
+                            500: '#F43F5E',
+                            600: '#E11D48',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+        }
+        .btn-interact {
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+        .btn-interact:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.04), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+        }
+        .card-hover:hover {
+            box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+            transform: translateY(-2px);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Custom subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-indigo-100 selection:text-indigo-800 pb-20">
+
+    <!-- HEADER / NAVIGATION BAR -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-[1152px] mx-auto px-4 h-16 flex items-center justify-between">
+            <!-- Left Brand Logo -->
+            <div onclick="handleLogoClick()" class="flex items-center gap-3 cursor-pointer group">
+                <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-sm group-hover:bg-indigo-800 transition">
+                    <i class="fa-solid fa-brain text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-xl text-slate-900 tracking-tight">VocabMaster</span>
+                        <span class="hidden sm:inline-block bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-indigo-100">Grammar · Lesson 4</span>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Present Simple & Present Continuous · Teacher Reporting</p>
+                </div>
+            </div>
+
+            <!-- Right Navigation & Role Switches -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button id="navStudentBtn" onclick="switchView('studentPortal')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-indigo-50 text-indigo-600 border border-indigo-100">
+                    <i class="fa-solid fa-user-graduate mr-1.5"></i><span class="hidden xs:inline">Student</span> Portal
+                </button>
+                <button id="navTeacherBtn" onclick="switchView('teacherDashboard')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
+                    <span><i class="fa-solid fa-chart-line mr-1.5 text-indigo-600"></i>Teacher<span class="hidden sm:inline"> Dashboard</span></span>
+                    <span id="headerSubCount" class="bg-indigo-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button onclick="openTeacherSetupModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition" title="Google Sheets Sync Settings">
+                    <i class="fa-solid fa-gear text-slate-600"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN DASHBOARD WRAPPER -->
+    <main class="max-w-[1152px] mx-auto px-4 py-8 flex-grow w-full">
+
+        <!-- ================= 1. STUDENT PORTAL (HOME) ================= -->
+        <div id="studentPortalView" class="space-y-8">
+            <!-- HERO BANNER -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-indigo-800 p-8 sm:p-10 text-white shadow-lg">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-indigo-50 border border-white/20">
+                        <i class="fa-solid fa-clock"></i> Lesson 4 · Present Simple &amp; Present Continuous
+                    </span>
+                    <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">Master English Tenses</h1>
+                    <p class="text-indigo-100 text-sm sm:text-base font-normal leading-relaxed">
+                        Practice daily routines (<strong>V / V-s / V-es</strong>) vs. actions happening right now (<strong>am / is / are + V-ing</strong>). Start with Split-Screen Visuals in Test 1, then solve Test 2 and Test 3!
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="initiateTest(1)" class="btn-interact bg-white text-indigo-800 hover:bg-indigo-50 font-bold px-5 py-2.5 rounded-xl text-sm shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-image text-indigo-600"></i> Start Test 1 (10 Qs)
+                        </button>
+                        <button onclick="initiateTest(2)" class="btn-interact bg-indigo-900/70 hover:bg-indigo-900 text-white border border-indigo-400/30 font-bold px-5 py-2.5 rounded-xl text-sm shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass text-emerald-400"></i> Start Test 2 (20 Qs)
+                        </button>
+                        <button onclick="initiateTest(3)" class="btn-interact bg-indigo-900/70 hover:bg-indigo-900 text-white border border-indigo-400/30 font-bold px-5 py-2.5 rounded-xl text-sm shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-amber-400"></i> Start Test 3 (20 Qs)
+                        </button>
+                    </div>
+                </div>
+                <!-- Decorative Graduation Cap Icon -->
+                <div class="absolute -right-4 -bottom-6 text-8xl sm:text-9xl text-white/10 pointer-events-none select-none">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+            </div>
+
+            <!-- STUDENT PROFILE BAR -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 card-shadow">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm border border-indigo-100">
+                        <i class="fa-solid fa-child-reaching"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Student Profile</p>
+                        <p id="portalStudentDisplay" class="text-sm font-bold text-slate-800">Not signed in yet (Click to set name & class)</p>
+                    </div>
+                </div>
+                <button onclick="openStudentModalOnly()" class="btn-interact bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-pen"></i> Edit Student Info
+                </button>
+            </div>
+
+            <!-- TEST CARDS GRID (3 SEPARATE TESTS) -->
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-indigo-600"></i> Practice Test Modules
+                    </h2>
+                    <span class="text-xs font-semibold text-slate-500">3 Tests · Instant Grading &amp; Answer Key</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- TEST 1 CARD (SPECIAL SPLIT-SCREEN VISUAL MODE - 10 QUESTIONS) -->
+                    <div class="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col justify-between card-shadow card-hover transition-all">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-black text-xl border border-indigo-100">
+                                    01
+                                </div>
+                                <div class="flex flex-col items-end gap-1">
+                                    <span class="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full border border-indigo-100">
+                                        10 Questions
+                                    </span>
+                                    <span class="text-[11px] font-bold text-indigo-600 flex items-center gap-1">
+                                        <i class="fa-solid fa-table-columns"></i> Split-Screen Visuals
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">Test 1: Look, Think &amp; Choose</h3>
+                                <p class="text-slate-500 text-sm mt-1 leading-relaxed">
+                                    Observe each illustrated scene on the right and choose between daily habits and actions happening right now.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Picture Scenes</span>
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Step-by-Step</span>
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Habits vs Now</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100 space-y-3">
+                            <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
+                                <span>Best Score</span>
+                                <span id="test1BestScore" class="text-slate-800 font-bold">-- / 10</span>
+                            </div>
+                            <button onclick="initiateTest(1)" class="w-full btn-interact bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-3 px-4 rounded-xl text-sm shadow-sm flex items-center justify-center gap-2">
+                                Start Test 1 <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TEST 2 CARD (SINGLE-PAGE CONTINUOUS MODE - 20 QUESTIONS) -->
+                    <div class="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col justify-between card-shadow card-hover transition-all">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-xl border border-emerald-100">
+                                    02
+                                </div>
+                                <div class="flex flex-col items-end gap-1">
+                                    <span class="bg-emerald-50 text-emerald-600 text-xs font-bold px-3 py-1 rounded-full border border-emerald-100">
+                                        20 Questions
+                                    </span>
+                                    <span class="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
+                                        <i class="fa-solid fa-scroll"></i> Full-Page Sheet
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">Test 2: Grammar Detective</h3>
+                                <p class="text-slate-500 text-sm mt-1 leading-relaxed">
+                                    All 20 questions on one continuous page. Practice verb conjugation, fill-in-the-blanks, tense clues, and error correction.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Part A–D</span>
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Fill Blanks</span>
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Fix Mistakes</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100 space-y-3">
+                            <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
+                                <span>Best Score</span>
+                                <span id="test2BestScore" class="text-slate-800 font-bold">-- / 20</span>
+                            </div>
+                            <button onclick="initiateTest(2)" class="w-full btn-interact bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-sm shadow-sm flex items-center justify-center gap-2">
+                                Start Test 2 <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TEST 3 CARD (SUPER CHALLENGE - 20 QUESTIONS) -->
+                    <div class="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col justify-between card-shadow card-hover transition-all">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-black text-xl border border-amber-100">
+                                    03
+                                </div>
+                                <div class="flex flex-col items-end gap-1">
+                                    <span class="bg-amber-50 text-amber-600 text-xs font-bold px-3 py-1 rounded-full border border-amber-100">
+                                        20 Questions
+                                    </span>
+                                    <span class="text-[11px] font-bold text-amber-600 flex items-center gap-1">
+                                        <i class="fa-solid fa-scroll"></i> Full-Page Sheet
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">Test 3: Super Challenge</h3>
+                                <p class="text-slate-500 text-sm mt-1 leading-relaxed">
+                                    Combine weather &amp; clothing vocabulary with both tenses, word rearrangement, and Lucy's rainy-day reading passage.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Part A–E</span>
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Word Order</span>
+                                <span class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-lg">Reading</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100 space-y-3">
+                            <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
+                                <span>Best Score</span>
+                                <span id="test3BestScore" class="text-slate-800 font-bold">-- / 20</span>
+                            </div>
+                            <button onclick="initiateTest(3)" class="w-full btn-interact bg-indigo-800 hover:bg-indigo-900 text-white font-bold py-3 px-4 rounded-xl text-sm shadow-sm flex items-center justify-center gap-2">
+                                Start Test 3 <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- QUICK GRAMMAR REFERENCE STRIP -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 card-shadow flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 font-bold">
+                        <i class="fa-solid fa-repeat"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-extrabold text-slate-900">Present Simple (Habits &amp; Routines)</h4>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                            <strong>I / You / We / They + V</strong> &bull; <strong>He / She / It + V-s/es</strong><br>
+                            Clues: <em>every day, every morning, every evening, usually, every Sunday</em>
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 card-shadow flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 font-bold">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-extrabold text-slate-900">Present Continuous (Happening Now)</h4>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                            <strong>I am / He, She, It is / We, You, They are + V-ing</strong><br>
+                            Clues: <em>now, right now, at the moment, Look!, Listen!</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 2. QUIZ WORKSPACE ================= -->
+        <div id="quizWorkspaceView" class="hidden space-y-6">
+            
+            <!-- Top Quiz Control & Progress Header -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 card-shadow flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <button onclick="confirmExitQuiz()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition" title="Exit to Portal">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 id="activeQuizTitle" class="font-bold text-slate-900 text-base">Test 1</h2>
+                            <span id="reviewModeBadge" class="hidden bg-emerald-100 text-emerald-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                Answer Key & Review Mode
+                            </span>
+                        </div>
+                        <p id="activeStudentBadge" class="text-xs text-slate-500 font-medium">Student: Alex (Class 2A)</p>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full sm:w-72 space-y-1.5">
+                    <div class="flex justify-between text-xs font-semibold text-slate-500">
+                        <span>Completion Progress</span>
+                        <span id="quizProgressText" class="text-indigo-600 font-bold">0 / 20 Answered</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200/60">
+                        <div id="quizProgressBar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REVIEW SUMMARY BANNER (Shown after submission when reviewing) -->
+            <div id="reviewSummaryBanner" class="hidden bg-white border-2 border-indigo-200 rounded-2xl p-5 card-shadow flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div id="bannerScoreCircle" class="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex flex-col items-center justify-center font-black shrink-0">
+                        <span id="bannerScoreNum" class="text-lg leading-none">18</span>
+                        <span id="bannerScoreTotal" class="text-[10px] opacity-80">/ 20</span>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 text-base">Test Submitted &amp; Graded!</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">
+                            Green cards indicate correct answers. Red cards show your response alongside the official answer key & clue.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button onclick="retryActiveQuiz()" class="btn-interact bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-4 py-2.5 rounded-xl text-xs transition">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Retake Test
+                    </button>
+                    <button onclick="switchView('studentPortal')" class="btn-interact bg-indigo-600 hover:bg-indigo-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition">
+                        Done & Exit
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODE A: TEST 1 SPECIAL SPLIT-SCREEN STEP-BY-STEP WORKSPACE -->
+            <div id="test1SplitWorkspace" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Left Column: Active Question & Controls (7 cols) -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div id="splitQuestionContainer">
+                        <!-- Rendered dynamically for current step -->
+                    </div>
+
+                    <!-- Step-by-Step Navigation Bar -->
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4 card-shadow flex items-center justify-between gap-3">
+                        <button id="splitPrevBtn" onclick="prevSplitQuestion()" class="btn-interact bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:pointer-events-none text-slate-700 font-bold px-4 py-2.5 rounded-xl text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-chevron-left text-xs"></i> Previous
+                        </button>
+
+                        <span id="splitStepIndicator" class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                            Question 1 of 20
+                        </span>
+
+                        <button id="splitNextBtn" onclick="nextSplitQuestion()" class="btn-interact bg-indigo-600 hover:bg-indigo-800 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-sm flex items-center gap-2">
+                            Next Question <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+
+                        <button id="splitSubmitBtn" onclick="submitQuiz()" class="hidden btn-interact bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Test
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Dedicated Picture / Visual Panel (5 cols) -->
+                <div class="lg:col-span-5 lg:sticky lg:top-24">
+                    <div class="bg-white border border-slate-200 rounded-[20px] p-5 card-shadow space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+                                <i class="fa-solid fa-image"></i> Scene Illustration
+                            </span>
+                            <label class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold px-2.5 py-1 rounded-lg text-[11px] transition flex items-center gap-1" title="Upload your own image for this question">
+                                <i class="fa-solid fa-upload"></i> Upload Custom Image
+                                <input type="file" accept="image/*" onchange="handleCustomImageUpload(event)" class="hidden">
+                            </label>
+                        </div>
+
+                        <!-- Visual Canvas / SVG / Uploaded Image Frame -->
+                        <div id="splitVisualFrame" class="w-full aspect-[4/3] bg-slate-50 rounded-2xl border border-slate-200/80 flex items-center justify-center overflow-hidden p-4 relative">
+                            <!-- Custom SVG or Uploaded Image injected here -->
+                        </div>
+
+                        <div class="flex items-center justify-between text-xs text-slate-500 bg-slate-50 px-3.5 py-2.5 rounded-xl border border-slate-100">
+                            <span id="splitVisualCaption" class="font-semibold text-slate-700">Look closely at the picture clue!</span>
+                            <button id="resetCustomImgBtn" onclick="resetCurrentCustomImage()" class="hidden text-rose-600 hover:underline font-bold text-[11px]">
+                                Reset Default
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE B: TEST 2 & TEST 3 SINGLE-PAGE CONTINUOUS WORKSPACE -->
+            <div id="singlePageWorkspace" class="hidden max-w-3xl mx-auto space-y-6">
+                <div id="allQuestionsContainer" class="space-y-6">
+                    <!-- All 20 questions rendered here -->
+                </div>
+
+                <!-- Bottom Submit Button -->
+                <div id="singlePageSubmitWrapper" class="pt-4 pb-8 text-center">
+                    <button onclick="submitQuiz()" class="btn-interact bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 px-10 rounded-2xl text-base shadow-lg flex items-center justify-center gap-2.5 mx-auto">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Test &amp; View Answer Key
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= 3. TEACHER DASHBOARD ================= -->
+        <div id="teacherDashboardView" class="hidden space-y-8">
+            <!-- Dashboard Title Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">Teacher Analytics &amp; Submissions</h1>
+                    <p class="text-sm text-slate-500 font-medium">Track student scores across Lesson 4 tests and sync results to Google Sheets</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="exportTeacherCSV()" class="btn-interact bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-file-csv text-emerald-600"></i> Export CSV
+                    </button>
+                    <button onclick="openTeacherSetupModal()" class="btn-interact bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-link text-indigo-600"></i> Configure Google Sheet Link
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4 METRIC CARDS -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Metric 1 -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Submissions</span>
+                        <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                    </div>
+                    <div id="metricSubmissions" class="text-2xl sm:text-3xl font-black text-slate-900">0</div>
+                    <p class="text-xs text-slate-400 mt-1">Completed test attempts</p>
+                </div>
+
+                <!-- Metric 2 -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Average Score</span>
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div id="metricAverage" class="text-2xl sm:text-3xl font-black text-slate-900">0%</div>
+                    <p class="text-xs text-slate-400 mt-1">Class mean accuracy</p>
+                </div>
+
+                <!-- Metric 3 -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Highest Score</span>
+                        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                    </div>
+                    <div id="metricHighest" class="text-2xl sm:text-3xl font-black text-slate-900">0%</div>
+                    <p class="text-xs text-slate-400 mt-1">Top accuracy achieved</p>
+                </div>
+
+                <!-- Metric 4 -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Pass Rate</span>
+                        <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                    </div>
+                    <div id="metricPassRate" class="text-2xl sm:text-3xl font-black text-slate-900">0%</div>
+                    <p class="text-xs text-slate-400 mt-1">Scores &ge; 50%</p>
+                </div>
+            </div>
+
+            <!-- FILTER CONTROLS & DATA TABLE -->
+            <div class="bg-white border border-slate-200 rounded-2xl card-shadow overflow-hidden">
+                <!-- Filter Bar -->
+                <div class="p-4 sm:p-5 border-b border-slate-200 bg-slate-50/50 flex flex-col md:flex-row gap-3 justify-between">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                        <input type="text" id="teacherSearchInput" oninput="filterTeacherTable()" placeholder="Search by student name..." class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-800 focus:outline-none focus:border-indigo-600 font-medium">
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <select id="teacherTestFilter" onchange="filterTeacherTable()" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:border-indigo-600">
+                            <option value="ALL">All Tests</option>
+                            <option value="1">Test 1: Look, Think &amp; Choose</option>
+                            <option value="2">Test 2: Grammar Detective</option>
+                            <option value="3">Test 3: Super Challenge</option>
+                        </select>
+                        <select id="teacherClassFilter" onchange="filterTeacherTable()" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:border-indigo-600">
+                            <option value="ALL">All Classes</option>
+                        </select>
+                        <button onclick="clearTeacherHistory()" class="px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl border border-rose-200 transition">
+                            Clear Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submissions Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 text-xs font-bold uppercase tracking-wider border-b border-slate-200">
+                                <th class="py-3.5 px-4">Student Name</th>
+                                <th class="py-3.5 px-4">Class</th>
+                                <th class="py-3.5 px-4">Test Module</th>
+                                <th class="py-3.5 px-4 text-center">Score</th>
+                                <th class="py-3.5 px-4 text-center">Accuracy</th>
+                                <th class="py-3.5 px-4 text-center">Google Sheet</th>
+                                <th class="py-3.5 px-4 text-right">Submitted At</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherTableBody" class="text-sm divide-y divide-slate-100 font-medium text-slate-700">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FLOATING BOTTOM-CORNER QUICK QUESTION NAVIGATOR -->
+    <div id="floatingNavigator" class="fixed bottom-4 right-4 left-4 sm:left-auto sm:max-w-md bg-white/95 backdrop-blur-md border border-slate-200 rounded-2xl p-3 z-30 shadow-xl hidden">
+        <div class="flex items-center justify-between mb-2 px-1">
+            <span id="navigatorTitleLabel" class="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-grid-2 text-indigo-600"></i> Question Navigator
+            </span>
+            <div class="flex items-center gap-2 text-[10px] font-semibold text-slate-400">
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-indigo-600 inline-block"></span> Done</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-200 inline-block"></span> Left</span>
+            </div>
+        </div>
+        <div id="navigatorButtons" class="grid grid-cols-10 gap-1.5">
+            <!-- Rendered dynamically -->
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-5 text-center text-xs font-semibold text-slate-400">
+        <div class="max-w-[1152px] mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <span>VocabMaster &copy; English Grammar Learning Platform</span>
+            <span>Lesson 4: Present Simple &amp; Present Continuous · Teacher Reporting Ready</span>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- 1. STUDENT SIGN-IN MODAL -->
+    <div id="studentModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-6 border border-slate-100">
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mx-auto font-bold border border-indigo-100">
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold text-slate-900">Student Details</h3>
+                <p class="text-xs text-slate-500">Enter your name and class so your teacher can see your test results.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Student Full Name</label>
+                    <input type="text" id="inputStudentName" placeholder="e.g. Minh Anh" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-indigo-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Class / Grade</label>
+                    <input type="text" id="inputStudentClass" placeholder="e.g. 2A" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-indigo-600">
+                </div>
+                <p id="studentModalError" class="text-xs font-bold text-rose-600 hidden">Please enter your name before starting.</p>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeModal('studentModal')" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-sm transition">Cancel</button>
+                <button onclick="saveStudentInfo()" class="w-1/2 bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-sm">Save & Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. QUIZ RESULT MODAL -->
+    <div id="resultModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center space-y-6 border border-slate-100">
+            <div id="resultBadgeIcon" class="text-6xl">🎉</div>
+            
+            <div>
+                <h3 id="resultTitle" class="text-2xl font-black text-slate-900">Great Job!</h3>
+                <p id="resultSubtitle" class="text-xs text-slate-500 mt-1">You completed the practice test!</p>
+            </div>
+
+            <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-5 max-w-xs mx-auto">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Your Final Score</span>
+                <div id="resultScore" class="text-4xl font-black text-slate-900 my-1">18 / 20</div>
+                <div id="resultPercentage" class="text-sm font-bold text-emerald-600">90% Correct</div>
+            </div>
+
+            <div id="sheetSyncNotice" class="text-xs font-semibold p-3 rounded-xl max-w-xs mx-auto hidden"></div>
+
+            <div class="flex flex-col gap-2.5 pt-2">
+                <button onclick="closeModal('resultModal'); enableReviewMode();" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> Review Answers & Corrections
+                </button>
+                <div class="flex gap-2">
+                    <button onclick="closeModal('resultModal'); switchView('studentPortal');" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-sm transition">Student Portal</button>
+                    <button onclick="closeModal('resultModal'); retryActiveQuiz();" class="w-1/2 bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-sm">Try Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CONFIRMATION / ALERT DIALOG MODAL (NO NATIVE ALERT/CONFIRM) -->
+    <div id="dialogModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-5 border border-slate-100 text-center">
+            <div id="dialogIcon" class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl mx-auto">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <div class="space-y-1.5">
+                <h3 id="dialogTitle" class="text-lg font-extrabold text-slate-900">Confirm Action</h3>
+                <p id="dialogMessage" class="text-xs text-slate-500 leading-relaxed">Are you sure?</p>
+            </div>
+            <div id="dialogActions" class="flex gap-3 pt-1">
+                <button id="dialogCancelBtn" onclick="closeModal('dialogModal')" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs transition">Cancel</button>
+                <button id="dialogConfirmBtn" class="w-1/2 bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2.5 rounded-xl text-xs transition">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. TEACHER SETUP & GOOGLE APPS SCRIPT MODAL -->
+    <div id="teacherSetupModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl space-y-6 border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base font-bold border border-emerald-100">
+                        <i class="fa-solid fa-table"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Google Sheets Integration</h3>
+                        <p class="text-xs text-slate-400">Connect your spreadsheet to collect student scores automatically</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('teacherSetupModal')" class="w-8 h-8 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-2.5">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600">Google Apps Script Web App URL</label>
+                <input type="text" id="webAppUrlInput" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-800 focus:outline-none focus:border-indigo-600">
+                <p id="setupSavedToast" class="text-xs font-bold text-emerald-600 hidden"><i class="fa-solid fa-check-circle mr-1"></i> Web App URL saved!</p>
+            </div>
+
+            <!-- Instructions -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-3 text-slate-600">
+                <div class="font-bold text-slate-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info text-indigo-600"></i> Quick Setup Guide:
+                </div>
+                <ol class="list-decimal list-inside space-y-1 font-medium pl-1">
+                    <li>Open Google Sheets and create a new spreadsheet.</li>
+                    <li>Click <strong>Extensions &gt; Apps Script</strong> in the top menu.</li>
+                    <li>Paste the code snippet below and click <strong>Save</strong>.</li>
+                    <li>Click <strong>Deploy &gt; New deployment</strong> &rarr; Choose <strong>Web app</strong>.</li>
+                    <li>Set <em>Execute as: Me</em> and <em>Who has access: Anyone</em>, then click <strong>Deploy</strong>.</li>
+                    <li>Copy the <strong>Web app URL</strong> and paste it above.</li>
+                </ol>
+
+                <div class="relative pt-1">
+                    <textarea readonly id="appsScriptSnippet" class="w-full bg-slate-900 text-emerald-400 font-mono text-[11px] p-3.5 rounded-xl h-36 resize-none focus:outline-none">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(["Timestamp", "Student Name", "Class", "Test Title", "Score", "Percentage"]);
+  }
+  
+  sheet.appendRow([
+    new Date(),
+    data.studentName,
+    data.studentClass,
+    data.testTitle,
+    data.score + "/" + data.total,
+    data.percentage + "%"
+  ]);
+  
+  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+}</textarea>
+                    <button id="copyCodeBtn" onclick="copyAppsScript()" class="absolute top-3 right-3 bg-white/15 hover:bg-white/25 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] transition">
+                        Copy Code
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-1">
+                <button onclick="closeModal('teacherSetupModal')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-5 rounded-xl text-sm transition">Close</button>
+                <button onclick="saveTeacherSettings()" class="btn-interact bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition shadow-sm">
+                    Save Web App Link
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        /* ================= 1. CUSTOM SVG SCENE ILLUSTRATIONS FOR TEST 1 (10 QUESTIONS) ================= */
+        function getTest1VisualSVG(qId) {
+            const svgs = {
+                // 1. Tom eating breakfast every morning (warm kitchen window, cereal bowl, toast, orange juice)
+                1: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#FEF3C7"/>
+                        <!-- Kitchen Window with Morning Sun -->
+                        <rect x="24" y="20" width="110" height="105" rx="8" fill="#E0F2FE" stroke="#92400E" stroke-width="4"/>
+                        <line x1="79" y1="20" x2="79" y2="125" stroke="#92400E" stroke-width="3"/>
+                        <line x1="24" y1="72" x2="134" y2="72" stroke="#92400E" stroke-width="3"/>
+                        <circle cx="52" cy="45" r="14" fill="#FACC15"/>
+                        <!-- Tom -->
+                        <circle cx="220" cy="88" r="36" fill="#FED7AA"/>
+                        <path d="M186 80 C190 48 250 48 254 80" fill="#CBD5E1"/>
+                        <circle cx="208" cy="86" r="3.5" fill="#1E293B"/>
+                        <circle cx="232" cy="86" r="3.5" fill="#1E293B"/>
+                        <path d="M208 102 Q220 114 232 102" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M175 168 C175 132 265 132 265 168 Z" fill="#4F46E5"/>
+                        <!-- Wooden Table & Breakfast Items -->
+                        <rect x="20" y="168" width="320" height="72" rx="10" fill="#D97706"/>
+                        <!-- Cereal Bowl -->
+                        <path d="M185 168 A35 26 0 0 0 255 168 Z" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+                        <circle cx="212" cy="166" r="5" fill="#EF4444"/>
+                        <circle cx="228" cy="166" r="5" fill="#EF4444"/>
+                        <!-- Toast Plate -->
+                        <ellipse cx="125" cy="182" rx="34" ry="12" fill="#F8FAFC"/>
+                        <rect x="108" y="166" width="32" height="20" rx="4" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
+                        <!-- Orange Juice -->
+                        <rect x="62" y="142" width="22" height="36" rx="3" fill="#FB923C" stroke="#EA580C" stroke-width="2"/>
+                        <text x="180" y="222" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#FFFBEB">Every morning: Tom eats breakfast</text>
+                    </svg>`,
+
+                // 2. Anna reading a book every night (cozy lamp, armchair, night window, open book)
+                2: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#1E293B"/>
+                        <!-- Night Window -->
+                        <rect x="24" y="22" width="95" height="100" rx="8" fill="#0F172A" stroke="#475569" stroke-width="3"/>
+                        <path d="M52 42 A14 14 0 1 0 68 58 A11 11 0 1 1 52 42 Z" fill="#FDE047"/>
+                        <circle cx="92" cy="46" r="2" fill="#FFFFFF"/>
+                        <circle cx="84" cy="72" r="2" fill="#FFFFFF"/>
+                        <!-- Warm Reading Lamp -->
+                        <polygon points="132,75 168,75 178,105 122,105" fill="#FBBF24"/>
+                        <polygon points="122,105 178,105 205,195 105,195" fill="#FEF08A" opacity="0.22"/>
+                        <rect x="147" y="105" width="6" height="65" fill="#94A3B8"/>
+                        <rect x="132" y="170" width="36" height="8" rx="4" fill="#64748B"/>
+                        <!-- Anna in Armchair -->
+                        <rect x="195" y="110" width="115" height="95" rx="18" fill="#475569"/>
+                        <circle cx="248" cy="86" r="30" fill="#FED7AA"/>
+                        <path d="M218 85 C218 52 278 52 278 88" fill="#0F172A"/>
+                        <circle cx="238" cy="86" r="3" fill="#1E293B"/>
+                        <circle cx="256" cy="86" r="3" fill="#1E293B"/>
+                        <!-- Open Book -->
+                        <polygon points="205,132 245,140 245,172 205,164" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+                        <polygon points="285,132 245,140 245,172 285,164" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+                        <text x="180" y="236" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#FDE047">Every night: Anna reads a book</text>
+                    </svg>`,
+
+                // 3. Peter brushing his teeth every morning (bathroom mirror, toothbrush, sink)
+                3: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#E0F2FE"/>
+                        <!-- Bathroom Mirror -->
+                        <rect x="115" y="18" width="175" height="145" rx="14" fill="#F0F9FF" stroke="#64748B" stroke-width="5"/>
+                        <!-- Peter Reflection -->
+                        <circle cx="202" cy="82" r="34" fill="#FED7AA"/>
+                        <path d="M170 72 C175 44 230 44 234 72" fill="#1E293B"/>
+                        <circle cx="190" cy="78" r="3.5" fill="#1E293B"/>
+                        <circle cx="214" cy="78" r="3.5" fill="#1E293B"/>
+                        <!-- Toothbrush & Foam -->
+                        <circle cx="202" cy="98" r="8" fill="#FFFFFF"/>
+                        <rect x="202" y="95" width="44" height="5" rx="2.5" fill="#2563EB"/>
+                        <path d="M162 160 C162 124 242 124 242 160 Z" fill="#94A3B8"/>
+                        <!-- Sink & Toothpaste -->
+                        <rect x="85" y="162" width="235" height="16" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+                        <rect x="132" y="132" width="14" height="30" rx="3" fill="#EF4444"/>
+                        <text x="180" y="222" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#0369A1">Every morning: Peter brushes his teeth</text>
+                    </svg>`,
+
+                // 4. Lisa walking to school every day (school gate, backpack, uniform, sidewalk)
+                4: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#ECFDF5"/>
+                        <!-- School Building in Background -->
+                        <rect x="28" y="45" width="120" height="85" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+                        <rect x="42" y="34" width="92" height="18" rx="4" fill="#2563EB"/>
+                        <text x="88" y="46" text-anchor="middle" font-family="Inter" font-weight="800" font-size="9" fill="#FFFFFF">SCHOOL</text>
+                        <!-- Sidewalk -->
+                        <rect x="0" y="185" width="360" height="75" fill="#CBD5E1"/>
+                        <!-- Lisa Walking -->
+                        <rect x="188" y="88" width="22" height="44" rx="8" fill="#F43F5E"/>
+                        <circle cx="218" cy="68" r="24" fill="#FED7AA"/>
+                        <path d="M196 64 C200 42 236 42 240 64" fill="#1E293B"/>
+                        <polygon points="204,92 232,92 236,132 200,132" fill="#FFFFFF"/>
+                        <polygon points="200,132 236,132 242,162 194,162" fill="#1E3A8A"/>
+                        <line x1="210" y1="162" x2="198" y2="192" stroke="#FED7AA" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="226" y1="162" x2="238" y2="192" stroke="#FED7AA" stroke-width="6" stroke-linecap="round"/>
+                        <text x="180" y="232" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#065F46">Every day: Lisa walks to school</text>
+                    </svg>`,
+
+                // 5. Ben playing football every afternoon (green pitch, goal post, kicking soccer ball)
+                5: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#FEF9C3"/>
+                        <!-- Green Field -->
+                        <rect x="0" y="135" width="360" height="125" fill="#22C55E"/>
+                        <!-- Goal Post -->
+                        <rect x="30" y="85" width="65" height="55" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+                        <!-- Ben Kicking -->
+                        <circle cx="170" cy="72" r="22" fill="#FED7AA"/>
+                        <rect x="155" y="96" width="30" height="42" rx="6" fill="#1E3A8A"/>
+                        <line x1="165" y1="138" x2="155" y2="178" stroke="#1E293B" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="178" y1="138" x2="215" y2="162" stroke="#1E293B" stroke-width="7" stroke-linecap="round"/>
+                        <!-- Football -->
+                        <circle cx="255" cy="162" r="18" fill="#FFFFFF" stroke="#1E293B" stroke-width="3"/>
+                        <polygon points="255,152 263,158 260,168 250,168 247,158" fill="#1E293B"/>
+                        <text x="180" y="232" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#FFFFFF">Every afternoon: Ben plays football</text>
+                    </svg>`,
+
+                // 6. Look! The girl is drinking water now
+                6: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#EFF6FF"/>
+                        <span class="badge"></span>
+                        <!-- Action Badge -->
+                        <rect x="115" y="14" width="130" height="24" rx="12" fill="#10B981"/>
+                        <text x="180" y="30" text-anchor="middle" font-family="Inter" font-weight="800" font-size="11" fill="#FFFFFF">HAPPENING NOW!</text>
+                        <!-- Girl -->
+                        <circle cx="165" cy="95" r="36" fill="#FDBA74"/>
+                        <path d="M130 88 C135 54 195 54 200 88" fill="#1E293B"/>
+                        <circle cx="154" cy="90" r="3.5" fill="#1E293B"/>
+                        <circle cx="176" cy="90" r="3.5" fill="#1E293B"/>
+                        <path d="M125 180 C125 136 205 136 205 180 Z" fill="#3B82F6"/>
+                        <!-- Water Bottle -->
+                        <rect x="185" y="96" width="24" height="52" rx="6" transform="rotate(-35 185 96)" fill="#BAE6FD" stroke="#0284C7" stroke-width="3"/>
+                        <text x="180" y="225" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#1D4ED8">Look! She is drinking water now</text>
+                    </svg>`,
+
+                // 7. The boy is running in the park right now
+                7: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#ECFDF5"/>
+                        <rect x="115" y="14" width="130" height="24" rx="12" fill="#10B981"/>
+                        <text x="180" y="30" text-anchor="middle" font-family="Inter" font-weight="800" font-size="11" fill="#FFFFFF">RIGHT NOW!</text>
+                        <!-- Park Trees & Path -->
+                        <circle cx="65" cy="95" r="32" fill="#34D399"/>
+                        <rect x="60" y="115" width="10" height="45" fill="#78350F"/>
+                        <rect x="0" y="160" width="360" height="100" fill="#D97706" opacity="0.25"/>
+                        <!-- Boy Running -->
+                        <circle cx="185" cy="76" r="22" fill="#FDBA74"/>
+                        <rect x="170" y="100" width="28" height="38" rx="6" fill="#2563EB"/>
+                        <line x1="175" y1="138" x2="148" y2="165" stroke="#1E293B" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="192" y1="138" x2="222" y2="168" stroke="#1E293B" stroke-width="7" stroke-linecap="round"/>
+                        <!-- Motion Lines -->
+                        <line x1="115" y1="95" x2="145" y2="95" stroke="#10B981" stroke-width="3" stroke-linecap="round"/>
+                        <line x1="105" y1="115" x2="140" y2="115" stroke="#10B981" stroke-width="3" stroke-linecap="round"/>
+                        <text x="180" y="225" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#047857">Right now: He is running in the park</text>
+                    </svg>`,
+
+                // 8. Look! Mary is dancing now
+                8: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#FFFBEB"/>
+                        <rect x="115" y="14" width="130" height="24" rx="12" fill="#10B981"/>
+                        <text x="180" y="30" text-anchor="middle" font-family="Inter" font-weight="800" font-size="11" fill="#FFFFFF">LOOK! NOW!</text>
+                        <!-- Music Notes -->
+                        <text x="85" y="90" font-size="26" fill="#F59E0B">🎵</text>
+                        <text x="255" y="85" font-size="26" fill="#F59E0B">🎶</text>
+                        <!-- Mary Dancing -->
+                        <circle cx="180" cy="74" r="22" fill="#FDBA74"/>
+                        <polygon points="164,98 196,98 214,155 146,155" fill="#F43F5E"/>
+                        <line x1="164" y1="104" x2="132" y2="82" stroke="#FDBA74" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="196" y1="104" x2="228" y2="86" stroke="#FDBA74" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="170" y1="155" x2="162" y2="188" stroke="#FDBA74" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="190" y1="155" x2="205" y2="180" stroke="#FDBA74" stroke-width="6" stroke-linecap="round"/>
+                        <text x="180" y="225" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#B45309">Look! Mary is dancing now</text>
+                    </svg>`,
+
+                // 9. The baby is sleeping at the moment
+                9: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#EEF2FF"/>
+                        <rect x="105" y="14" width="150" height="24" rx="12" fill="#10B981"/>
+                        <text x="180" y="30" text-anchor="middle" font-family="Inter" font-weight="800" font-size="11" fill="#FFFFFF">AT THE MOMENT!</text>
+                        <!-- Wooden Crib -->
+                        <rect x="85" y="95" width="190" height="85" rx="10" fill="#FEF3C7" stroke="#92400E" stroke-width="4"/>
+                        <line x1="120" y1="95" x2="120" y2="180" stroke="#92400E" stroke-width="3"/>
+                        <line x1="155" y1="95" x2="155" y2="180" stroke="#92400E" stroke-width="3"/>
+                        <line x1="190" y1="95" x2="190" y2="180" stroke="#92400E" stroke-width="3"/>
+                        <line x1="225" y1="95" x2="225" y2="180" stroke="#92400E" stroke-width="3"/>
+                        <!-- Sleeping Baby -->
+                        <circle cx="145" cy="135" r="22" fill="#FED7AA"/>
+                        <path d="M135 135 Q140 140 145 135 M148 135 Q153 140 158 135" fill="none" stroke="#1E293B" stroke-width="2"/>
+                        <rect x="165" y="122" width="90" height="46" rx="10" fill="#818CF8"/>
+                        <text x="235" y="78" font-family="Inter" font-weight="900" font-size="18" fill="#4F46E5">Zzz...</text>
+                        <text x="180" y="225" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#3730A3">At the moment: The baby is sleeping</text>
+                    </svg>`,
+
+                // 10. Listen! The children are listening to music
+                10: `<svg viewBox="0 0 360 260" class="w-full h-full">
+                        <rect width="360" height="260" rx="16" fill="#F0FDFA"/>
+                        <rect x="115" y="14" width="130" height="24" rx="12" fill="#10B981"/>
+                        <text x="180" y="30" text-anchor="middle" font-family="Inter" font-weight="800" font-size="11" fill="#FFFFFF">LISTEN! NOW!</text>
+                        <!-- Child 1 with Headphones -->
+                        <circle cx="110" cy="115" r="26" fill="#FDBA74"/>
+                        <path d="M82 115 A28 28 0 0 1 138 115" fill="none" stroke="#EC4899" stroke-width="5"/>
+                        <rect x="78" y="106" width="8" height="18" rx="4" fill="#EC4899"/>
+                        <rect x="134" y="106" width="8" height="18" rx="4" fill="#EC4899"/>
+                        <!-- Child 2 with Headphones -->
+                        <circle cx="180" cy="115" r="26" fill="#FED7AA"/>
+                        <path d="M152 115 A28 28 0 0 1 208 115" fill="none" stroke="#3B82F6" stroke-width="5"/>
+                        <rect x="148" y="106" width="8" height="18" rx="4" fill="#3B82F6"/>
+                        <rect x="204" y="106" width="8" height="18" rx="4" fill="#3B82F6"/>
+                        <!-- Child 3 -->
+                        <circle cx="250" cy="115" r="26" fill="#FDBA74"/>
+                        <text x="180" y="72" text-anchor="middle" font-size="22">🎵 🎧 🎶</text>
+                        <text x="180" y="225" text-anchor="middle" font-family="Inter" font-weight="800" font-size="13" fill="#0F766E">Listen! They are listening to music</text>
+                    </svg>`
+            };
+            return svgs[qId] || svgs[1];
+        }
+
+        /* ================= 2. LESSON 4 QUESTION BANKS (PRESENT SIMPLE & PRESENT CONTINUOUS) ================= */
+
+        // TEST 1 – LOOK, THINK & CHOOSE (10 Questions · Split-Screen Visual Mode)
+        const test1Data = [
+            {
+                id: 1,
+                type: 'mc',
+                groupBadge: 'Group 1 · Habits & Daily Routines',
+                question: '1. Every morning, Tom eats breakfast. What does Tom do?',
+                options: [
+                    'He eats breakfast every morning.',
+                    'He is eating breakfast now.',
+                    'He is sleeping now.'
+                ],
+                correct: 'He eats breakfast every morning.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "Every morning" shows a daily habit (Present Simple).',
+                explanation: '"Every morning" signals a daily routine, so we use Present Simple: "He eats breakfast every morning."'
+            },
+            {
+                id: 2,
+                type: 'mc',
+                groupBadge: 'Group 1 · Habits & Daily Routines',
+                question: '2. Anna reads a book every night. What does Anna do?',
+                options: [
+                    'She is dancing.',
+                    'She reads a book every night.',
+                    'She is drinking water.'
+                ],
+                correct: 'She reads a book every night.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "Every night" describes Anna’s regular habit.',
+                explanation: '"Every night" is a Present Simple time marker. With "She", we add -s: "She reads a book every night."'
+            },
+            {
+                id: 3,
+                type: 'mc',
+                groupBadge: 'Group 1 · Habits & Daily Routines',
+                question: '3. Peter brushes his teeth every morning. Choose the correct sentence.',
+                options: [
+                    'Peter brush his teeth every morning.',
+                    'Peter is brushing his teeth now.',
+                    'Peter brushes his teeth every morning.'
+                ],
+                correct: 'Peter brushes his teeth every morning.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: Peter (He) + brush + -es for a daily routine.',
+                explanation: 'For singular subject "Peter" (He) in Present Simple, "brush" adds "-es" -> "brushes".'
+            },
+            {
+                id: 4,
+                type: 'mc',
+                groupBadge: 'Group 1 · Habits & Daily Routines',
+                question: '4. Lisa walks to school every day. Which sentence is correct?',
+                options: [
+                    'Lisa walks to school every day.',
+                    'Lisa is walk to school every day.',
+                    'Lisa walking to school every day.'
+                ],
+                correct: 'Lisa walks to school every day.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "Every day" uses Present Simple (Lisa + walks).',
+                explanation: '"Every day" indicates a regular habit. With "Lisa" (She), the verb takes "-s": "walks".'
+            },
+            {
+                id: 5,
+                type: 'mc',
+                groupBadge: 'Group 1 · Habits & Daily Routines',
+                question: '5. Ben plays football every afternoon. What does Ben do?',
+                options: [
+                    'He is sleeping now.',
+                    'He plays football every afternoon.',
+                    'He is drinking milk now.'
+                ],
+                correct: 'He plays football every afternoon.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "Every afternoon" describes Ben’s regular afternoon activity.',
+                explanation: '"Every afternoon" signals a repeated habit -> Present Simple: "He plays football every afternoon."'
+            },
+            {
+                id: 6,
+                type: 'mc',
+                groupBadge: 'Group 2 · Happening Right Now',
+                question: '6. Look! The girl is drinking water.',
+                options: [
+                    'She drinks water every morning.',
+                    'She is drinking water now.',
+                    'She drink water now.'
+                ],
+                correct: 'She is drinking water now.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "Look!" tells us the action is happening right now.',
+                explanation: '"Look!" signals Present Continuous (is/am/are + V-ing): "She is drinking water now."'
+            },
+            {
+                id: 7,
+                type: 'mc',
+                groupBadge: 'Group 2 · Happening Right Now',
+                question: '7. The boy is running in the park right now.',
+                options: [
+                    'He runs every day.',
+                    'He is running now.',
+                    'He run now.'
+                ],
+                correct: 'He is running now.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "Right now" means Present Continuous (is + running).',
+                explanation: '"Right now" describes an action in progress -> "He is running now."'
+            },
+            {
+                id: 8,
+                type: 'mc',
+                groupBadge: 'Group 2 · Happening Right Now',
+                question: '8. Look! Mary is dancing.',
+                options: [
+                    'Mary dances every Sunday.',
+                    'Mary dance now.',
+                    'Mary is dancing now.'
+                ],
+                correct: 'Mary is dancing now.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "Look!" indicates what Mary is doing at this moment.',
+                explanation: '"Look!" signals Present Continuous: "Mary is dancing now."'
+            },
+            {
+                id: 9,
+                type: 'mc',
+                groupBadge: 'Group 2 · Happening Right Now',
+                question: '9. The baby is sleeping at the moment.',
+                options: [
+                    'The baby sleeps every night.',
+                    'The baby is sleeping now.',
+                    'The baby sleep now.'
+                ],
+                correct: 'The baby is sleeping now.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "At the moment" = right now (is sleeping).',
+                explanation: '"At the moment" means the action is happening right now -> "The baby is sleeping now."'
+            },
+            {
+                id: 10,
+                type: 'mc',
+                groupBadge: 'Group 2 · Happening Right Now',
+                question: '10. Listen! The children are listening to music.',
+                options: [
+                    'They listen to music every day.',
+                    'They are listening to music now.',
+                    'They listens to music now.'
+                ],
+                correct: 'They are listening to music now.',
+                badge: 'Multiple Choice',
+                caption: 'Clue: "Listen!" draws attention to an action happening right now.',
+                explanation: '"Listen!" signals Present Continuous for plural subject "They": "They are listening to music now."'
+            }
+        ];
+
+        // TEST 2 – GRAMMAR DETECTIVE (20 Questions · Single-Page Continuous Sheet)
+        const test2Data = [
+            // Part A – Choose the correct answer (1–6)
+            { id: 1, sectionHeader: 'Part A – Choose the correct answer (Questions 1–6)', type: 'mc', question: '1. She _____ to school every morning.', options: ['go', 'goes', 'is going'], correct: 'goes', badge: 'Part A · Multiple Choice', explanation: '"Every morning" = Present Simple. Subject "She" takes "-es": "goes".' },
+            { id: 2, type: 'mc', question: '2. Look! The dog _____.', options: ['runs', 'run', 'is running'], correct: 'is running', badge: 'Part A · Multiple Choice', explanation: '"Look!" = action happening now -> Present Continuous: "is running".' },
+            { id: 3, type: 'mc', question: '3. I _____ milk every day.', options: ['drink', 'drinks', 'am drinking'], correct: 'drink', badge: 'Part A · Multiple Choice', explanation: '"Every day" = Present Simple. With "I", use base verb "drink".' },
+            { id: 4, type: 'mc', question: '4. They _____ football now.', options: ['plays', 'are playing', 'play'], correct: 'are playing', badge: 'Part A · Multiple Choice', explanation: '"Now" = Present Continuous. With "They", use "are playing".' },
+            { id: 5, type: 'mc', question: '5. My father _____ TV every evening.', options: ['watch', 'watches', 'is watching'], correct: 'watches', badge: 'Part A · Multiple Choice', explanation: '"Every evening" = Present Simple. "My father" (He) + watch + -es = "watches".' },
+            { id: 6, type: 'mc', question: '6. Listen! The birds _____.', options: ['sing', 'sings', 'are singing'], correct: 'are singing', badge: 'Part A · Multiple Choice', explanation: '"Listen!" = happening right now -> Plural "The birds" + "are singing".' },
+
+            // Part B – Fill in the blanks (7–12)
+            { id: 7, sectionHeader: 'Part B – Fill in the blanks with the correct verb form (Questions 7–12)', type: 'fill', question: '7. He _____ (eat) breakfast every morning.', correct: ['eats'], badge: 'Part B · Fill in the Blank', explanation: '"Every morning" = Present Simple. "He" takes "-s" -> "eats".' },
+            { id: 8, type: 'fill', question: '8. I _____ (read) a book now.', correct: ['am reading', "'m reading"], badge: 'Part B · Fill in the Blank', explanation: '"Now" = Present Continuous. "I" + "am reading".' },
+            { id: 9, type: 'fill', question: '9. She _____ (wash) her face every day.', correct: ['washes'], badge: 'Part B · Fill in the Blank', explanation: '"Every day" = Present Simple. Verbs ending in -sh add "-es" for "She" -> "washes".' },
+            { id: 10, type: 'fill', question: '10. They _____ (run) in the park now.', correct: ['are running', "'re running"], badge: 'Part B · Fill in the Blank', explanation: '"Now" = Present Continuous. "They" + "are running" (double the "n").' },
+            { id: 11, type: 'fill', question: '11. My mother _____ (cook) dinner every evening.', correct: ['cooks'], badge: 'Part B · Fill in the Blank', explanation: '"Every evening" = Present Simple. "My mother" (She) takes "-s" -> "cooks".' },
+            { id: 12, type: 'fill', question: '12. We _____ (play) games at the moment.', correct: ['are playing', "'re playing"], badge: 'Part B · Fill in the Blank', explanation: '"At the moment" = Present Continuous. "We" + "are playing".' },
+
+            // Part C – Choose the correct tense (13–16)
+            { id: 13, sectionHeader: 'Part C – Choose the correct tense (Questions 13–16)', type: 'mc', question: "13. My brother usually _____ at 6 o'clock.", options: ['wakes up', 'is waking up'], correct: 'wakes up', badge: 'Part C · Choose Tense', explanation: '"Usually" signals a regular routine -> Present Simple: "wakes up".' },
+            { id: 14, type: 'mc', question: '14. Look! The girl _____ a picture.', options: ['draws', 'is drawing'], correct: 'is drawing', badge: 'Part C · Choose Tense', explanation: '"Look!" signals an action happening right now -> Present Continuous: "is drawing".' },
+            { id: 15, type: 'mc', question: '15. We _____ English every Monday.', options: ['study', 'are studying'], correct: 'study', badge: 'Part C · Choose Tense', explanation: '"Every Monday" is a weekly habit -> Present Simple: "study".' },
+            { id: 16, type: 'mc', question: '16. Right now, Dad _____ to music.', options: ['listens', 'is listening'], correct: 'is listening', badge: 'Part C · Choose Tense', explanation: '"Right now" signals an action in progress -> Present Continuous: "is listening".' },
+
+            // Part D – Find the mistakes & write the correct sentence (17–20)
+            { id: 17, sectionHeader: 'Part D – Find the mistakes & write the correct sentence (Questions 17–20)', type: 'fill', question: '17. Fix the mistake: "She play tennis every Sunday." → Correct sentence:', correct: ['she plays tennis every sunday'], badge: 'Part D · Error Correction', explanation: 'With "She" in Present Simple ("every Sunday"), "play" must be "plays": "She plays tennis every Sunday."' },
+            { id: 18, type: 'fill', question: '18. Fix the mistake: "I am drink water now." → Correct sentence:', correct: ['i am drinking water now'], badge: 'Part D · Error Correction', explanation: 'In Present Continuous ("now"), use "am + V-ing": "I am drinking water now."' },
+            { id: 19, type: 'fill', question: '19. Fix the mistake: "He are reading a book." → Correct sentence:', correct: ['he is reading a book'], badge: 'Part D · Error Correction', explanation: 'Singular subject "He" goes with "is", not "are": "He is reading a book."' },
+            { id: 20, type: 'fill', question: '20. Fix the mistake: "They goes to school every day." → Correct sentence:', correct: ['they go to school every day'], badge: 'Part D · Error Correction', explanation: 'Plural subject "They" uses base verb "go", not "goes": "They go to school every day."' }
+        ];
+
+        // TEST 3 – SUPER CHALLENGE (20 Questions · Single-Page Continuous Sheet)
+        const test3Data = [
+            // Part A – Vocabulary in context (1–5)
+            { id: 1, sectionHeader: 'Part A – Vocabulary in context (Questions 1–5)', type: 'mc', question: '1. It is very cold today. Tom _____ a coat.', options: ['wear', 'wears', 'wearing'], correct: 'wears', badge: 'Part A · Vocabulary & Tense', explanation: 'Singular subject "Tom" (He) takes "-s" in Present Simple: "wears".' },
+            { id: 2, type: 'mc', question: '2. Look! It is raining. Mary _____ an umbrella.', options: ['is opening', 'opens', 'open'], correct: 'is opening', badge: 'Part A · Vocabulary & Tense', explanation: '"Look! It is raining" shows an action happening right now -> "is opening".' },
+            { id: 3, type: 'mc', question: '3. The boy is very thirsty. He _____ water every morning.', options: ['drink', 'drinks', 'is drink'], correct: 'drinks', badge: 'Part A · Vocabulary & Tense', explanation: '"Every morning" = daily habit. "He" + "drinks".' },
+            { id: 4, type: 'mc', question: "4. My sister is sleepy. She _____ every night at 9 o'clock.", options: ['sleeps', 'is sleeping', 'sleep'], correct: 'sleeps', badge: 'Part A · Vocabulary & Tense', explanation: '"Every night" = regular habit. "She" + "sleeps".' },
+            { id: 5, type: 'mc', question: '5. It is sunny today. The children _____ in the park now.', options: ['play', 'plays', 'are playing'], correct: 'are playing', badge: 'Part A · Vocabulary & Tense', explanation: '"Now" + plural subject "The children" -> "are playing".' },
+
+            // Part B – Complete the sentences (6–10)
+            { id: 6, sectionHeader: 'Part B – Complete the sentences (Questions 6–10)', type: 'fill', question: '6. My brother usually _____ (brush) his teeth before bed.', correct: ['brushes'], badge: 'Part B · Complete Sentence', explanation: '"Usually" = Present Simple. "My brother" (He) + brush + -es = "brushes".' },
+            { id: 7, type: 'fill', question: '7. Look! The girl _____ (wear) a beautiful dress.', correct: ['is wearing', "'s wearing"], badge: 'Part B · Complete Sentence', explanation: '"Look!" = Present Continuous. "The girl" + "is wearing".' },
+            { id: 8, type: 'fill', question: '8. My father _____ (go) to work every morning.', correct: ['goes'], badge: 'Part B · Complete Sentence', explanation: '"Every morning" = Present Simple. "My father" (He) + go + -es = "goes".' },
+            { id: 9, type: 'fill', question: '9. The children _____ (dance) right now.', correct: ['are dancing', "'re dancing"], badge: 'Part B · Complete Sentence', explanation: '"Right now" = Present Continuous. Plural "The children" + "are dancing".' },
+            { id: 10, type: 'fill', question: '10. It is cold. My mother _____ (put on) her jacket now.', correct: ['is putting on', "'s putting on"], badge: 'Part B · Complete Sentence', explanation: '"Now" = Present Continuous. "My mother" + "is putting on" (double the "t").' },
+
+            // Part C – Choose the best answer (11–15)
+            { id: 11, sectionHeader: 'Part C – Choose the best answer (Questions 11–15)', type: 'mc', question: '11. Anna is happy because she _____ with her friends now.', options: ['plays', 'is playing', 'play'], correct: 'is playing', badge: 'Part C · Mixed Tenses', explanation: '"Now" signals Present Continuous -> "is playing".' },
+            { id: 12, type: 'mc', question: '12. My brother usually _____ books, but now he _____ a picture.', options: ['reads / is drawing', 'is reading / draws', 'read / drawing'], correct: 'reads / is drawing', badge: 'Part C · Mixed Tenses', explanation: '"Usually" -> Present Simple ("reads"); "but now" -> Present Continuous ("is drawing").' },
+            { id: 13, type: 'mc', question: '13. It is rainy today. My father _____ an umbrella every time he goes outside.', options: ['carry', 'carries', 'is carry'], correct: 'carries', badge: 'Part C · Mixed Tenses', explanation: '"Every time" = repeated habit. "Carry" changes -y to -ies for "My father": "carries".' },
+            { id: 14, type: 'mc', question: '14. Listen! The baby _____.', options: ['cries', 'cry', 'is crying'], correct: 'is crying', badge: 'Part C · Mixed Tenses', explanation: '"Listen!" = happening right now -> "is crying".' },
+            { id: 15, type: 'mc', question: '15. Peter _____ his homework every evening. He _____ it now.', options: ['does / is doing', 'is doing / does', 'do / is do'], correct: 'does / is doing', badge: 'Part C · Mixed Tenses', explanation: '"Every evening" -> Present Simple ("does"); "now" -> Present Continuous ("is doing").' },
+
+            // Part D – Rearrange the words (16–18)
+            { id: 16, sectionHeader: 'Part D – Rearrange the words to make a correct sentence (Questions 16–18)', type: 'fill', question: '16. Rearrange: every / She / morning / drinks / milk →', correct: ['she drinks milk every morning'], badge: 'Part D · Word Order', explanation: 'Correct word order: "She drinks milk every morning."' },
+            { id: 17, type: 'fill', question: '17. Rearrange: now / is / He / running / outside →', correct: ['he is running outside now'], badge: 'Part D · Word Order', explanation: 'Correct word order: "He is running outside now."' },
+            { id: 18, type: 'fill', question: '18. Rearrange: a / wearing / coat / is / She →', correct: ['she is wearing a coat'], badge: 'Part D · Word Order', explanation: 'Correct word order: "She is wearing a coat."' },
+
+            // Part E – Read and understand (19–20)
+            {
+                id: 19,
+                sectionHeader: 'Part E – Read and understand (Questions 19–20)',
+                readingPassage: 'Today is rainy and cold. Lucy is wearing her yellow coat. She usually walks to school every morning, but today her father is taking her to school by car. Lucy is happy because she likes rainy days.',
+                type: 'mc',
+                question: '19. What does Lucy usually do every morning?',
+                options: ['She walks to school.', 'She is walking to school.', 'She takes a car.'],
+                correct: 'She walks to school.',
+                badge: 'Part E · Reading Comprehension',
+                explanation: 'The passage states: "She usually walks to school every morning."'
+            },
+            {
+                id: 20,
+                type: 'mc',
+                question: '20. What is her father doing today?',
+                options: ['He drives to work.', 'He is taking Lucy to school by car.', 'He walks to school.'],
+                correct: 'He is taking Lucy to school by car.',
+                badge: 'Part E · Reading Comprehension',
+                explanation: 'The passage states: "...today her father is taking her to school by car."'
+            }
+        ];
+
+        /* ================= 3. APPLICATION STATE ================= */
+        let studentProfile = { name: '', class: '' };
+        let pendingTestToStart = null;
+        let activeTestIndex = 1;
+        let currentQuestions = [];
+        let currentSplitIndex = 0; // For Test 1 step-by-step
+        let userAnswers = {}; // { questionId: answer }
+        let isReviewMode = false;
+        let teacherWebAppUrl = '';
+        let customTest1Images = {}; // { qId: dataUrl }
+
+        /* ================= 4. INITIALIZATION ================= */
+        window.onload = function() {
+            loadLocalStorageData();
+            updatePortalStudentBanner();
+            updateTeacherAnalytics();
+            updateBestScores();
+        };
+
+        function loadLocalStorageData() {
+            try {
+                const savedProfile = localStorage.getItem('vocabmaster_student');
+                if (savedProfile) {
+                    studentProfile = JSON.parse(savedProfile);
+                }
+
+                const savedUrl = localStorage.getItem('vocabmaster_teacher_url');
+                if (savedUrl) {
+                    teacherWebAppUrl = savedUrl;
+                    document.getElementById('webAppUrlInput').value = savedUrl;
+                }
+
+                const savedImgs = localStorage.getItem('vocabmaster_t1_images');
+                if (savedImgs) {
+                    customTest1Images = JSON.parse(savedImgs);
+                }
+            } catch (err) {
+                console.error('Error loading localStorage:', err);
+            }
+        }
+
+        function updatePortalStudentBanner() {
+            const el = document.getElementById('portalStudentDisplay');
+            if (studentProfile.name) {
+                el.innerHTML = `<span class="text-indigo-600">${escapeHTML(studentProfile.name)}</span> · Class <span class="text-slate-900">${escapeHTML(studentProfile.class || '2A')}</span>`;
+            } else {
+                el.innerText = 'Not signed in yet (Click Edit to set your name & class)';
+            }
+        }
+
+        /* ================= 5. VIEW & NAVIGATION MANAGEMENT ================= */
+        function handleLogoClick() {
+            if (!document.getElementById('quizWorkspaceView').classList.contains('hidden') && !isReviewMode) {
+                confirmExitQuiz();
+            } else {
+                switchView('studentPortal');
+            }
+        }
+
+        function switchView(viewName) {
+            document.getElementById('studentPortalView').classList.add('hidden');
+            document.getElementById('quizWorkspaceView').classList.add('hidden');
+            document.getElementById('teacherDashboardView').classList.add('hidden');
+            document.getElementById('floatingNavigator').classList.add('hidden');
+
+            document.getElementById('navStudentBtn').className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition';
+            document.getElementById('navTeacherBtn').className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition flex items-center gap-2';
+
+            if (viewName === 'studentPortal') {
+                document.getElementById('studentPortalView').classList.remove('hidden');
+                document.getElementById('navStudentBtn').className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-indigo-50 text-indigo-600 border border-indigo-100';
+                updateBestScores();
+                updatePortalStudentBanner();
+            } else if (viewName === 'quizWorkspace') {
+                document.getElementById('quizWorkspaceView').classList.remove('hidden');
+                document.getElementById('floatingNavigator').classList.remove('hidden');
+            } else if (viewName === 'teacherDashboard') {
+                document.getElementById('teacherDashboardView').classList.remove('hidden');
+                document.getElementById('navTeacherBtn').className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center gap-2';
+                updateTeacherAnalytics();
+            }
+        }
+
+        /* ================= 6. MODALS & CUSTOM DIALOGS ================= */
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showCustomDialog({ title, message, confirmText = 'Confirm', showCancel = true, isDestructive = false, onConfirm = null }) {
+            document.getElementById('dialogTitle').innerText = title;
+            document.getElementById('dialogMessage').innerText = message;
+
+            const cancelBtn = document.getElementById('dialogCancelBtn');
+            const confirmBtn = document.getElementById('dialogConfirmBtn');
+            const iconBox = document.getElementById('dialogIcon');
+
+            cancelBtn.style.display = showCancel ? 'block' : 'none';
+            confirmBtn.style.width = showCancel ? '50%' : '100%';
+            confirmBtn.innerText = confirmText;
+
+            if (isDestructive) {
+                confirmBtn.className = 'bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl text-xs transition';
+                iconBox.className = 'w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl mx-auto';
+            } else {
+                confirmBtn.className = 'bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2.5 rounded-xl text-xs transition';
+                iconBox.className = 'w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mx-auto';
+            }
+
+            confirmBtn.onclick = function() {
+                closeModal('dialogModal');
+                if (typeof onConfirm === 'function') onConfirm();
+            };
+
+            openModal('dialogModal');
+        }
+
+        function openStudentModalOnly() {
+            pendingTestToStart = null;
+            document.getElementById('inputStudentName').value = studentProfile.name || '';
+            document.getElementById('inputStudentClass').value = studentProfile.class || '';
+            document.getElementById('studentModalError').classList.add('hidden');
+            openModal('studentModal');
+        }
+
+        function saveStudentInfo() {
+            const name = document.getElementById('inputStudentName').value.trim();
+            const cls = document.getElementById('inputStudentClass').value.trim();
+            const errEl = document.getElementById('studentModalError');
+
+            if (!name) {
+                errEl.classList.remove('hidden');
+                return;
+            }
+            errEl.classList.add('hidden');
+
+            studentProfile = { name: name, class: cls || '2A' };
+            localStorage.setItem('vocabmaster_student', JSON.stringify(studentProfile));
+            updatePortalStudentBanner();
+            closeModal('studentModal');
+
+            if (pendingTestToStart !== null) {
+                const testToRun = pendingTestToStart;
+                pendingTestToStart = null;
+                startTest(testToRun);
+            }
+        }
+
+        function openTeacherSetupModal() {
+            document.getElementById('setupSavedToast').classList.add('hidden');
+            openModal('teacherSetupModal');
+        }
+
+        function saveTeacherSettings() {
+            const url = document.getElementById('webAppUrlInput').value.trim();
+            teacherWebAppUrl = url;
+            localStorage.setItem('vocabmaster_teacher_url', url);
+            const toast = document.getElementById('setupSavedToast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                closeModal('teacherSetupModal');
+            }, 900);
+        }
+
+        function copyAppsScript() {
+            const code = document.getElementById('appsScriptSnippet');
+            code.select();
+            document.execCommand('copy');
+            const btn = document.getElementById('copyCodeBtn');
+            btn.innerText = 'Copied!';
+            setTimeout(() => { btn.innerText = 'Copy Code'; }, 1500);
+        }
+
+        /* ================= 7. TEST LAUNCH & WORKSPACE ROUTING ================= */
+        function initiateTest(testNum) {
+            if (!studentProfile.name) {
+                pendingTestToStart = testNum;
+                document.getElementById('inputStudentName').value = '';
+                document.getElementById('inputStudentClass').value = '';
+                document.getElementById('studentModalError').classList.add('hidden');
+                openModal('studentModal');
+                return;
+            }
+            startTest(testNum);
+        }
+
+        function startTest(testNum) {
+            activeTestIndex = testNum;
+            if (testNum === 1) currentQuestions = test1Data;
+            else if (testNum === 2) currentQuestions = test2Data;
+            else currentQuestions = test3Data;
+
+            userAnswers = {};
+            isReviewMode = false;
+            currentSplitIndex = 0;
+
+            const titles = [
+                'Test 1: Look, Think & Choose',
+                'Test 2: Grammar Detective',
+                'Test 3: Super Challenge'
+            ];
+            document.getElementById('activeQuizTitle').innerText = titles[testNum - 1];
+            document.getElementById('activeStudentBadge').innerText = `Student: ${studentProfile.name} (Class ${studentProfile.class})`;
+            document.getElementById('reviewModeBadge').classList.add('hidden');
+            document.getElementById('reviewSummaryBanner').classList.add('hidden');
+
+            switchView('quizWorkspace');
+
+            // Route between Test 1 (Split-Screen Step-by-Step) and Test 2/3 (Single-Page Scroll)
+            if (testNum === 1) {
+                document.getElementById('test1SplitWorkspace').classList.remove('hidden');
+                document.getElementById('singlePageWorkspace').classList.add('hidden');
+                renderSplitStep();
+            } else {
+                document.getElementById('test1SplitWorkspace').classList.add('hidden');
+                document.getElementById('singlePageWorkspace').classList.remove('hidden');
+                document.getElementById('singlePageSubmitWrapper').classList.remove('hidden');
+                renderAllQuestionsSinglePage();
+            }
+
+            updateProgressAndNavigator();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ================= 8. TEST 1 SPLIT-SCREEN STEP-BY-STEP LOGIC ================= */
+        function renderSplitStep() {
+            const q = currentQuestions[currentSplitIndex];
+            const container = document.getElementById('splitQuestionContainer');
+            container.innerHTML = renderQuestionCardHTML(q, currentSplitIndex);
+
+            // Render right-side visual card
+            const visualFrame = document.getElementById('splitVisualFrame');
+            const resetBtn = document.getElementById('resetCustomImgBtn');
+            if (customTest1Images[q.id]) {
+                visualFrame.innerHTML = `<img src="${customTest1Images[q.id]}" alt="Question ${q.id} Visual" class="max-h-full max-w-full object-contain rounded-xl shadow-sm">`;
+                resetBtn.classList.remove('hidden');
+            } else {
+                visualFrame.innerHTML = getTest1VisualSVG(q.id);
+                resetBtn.classList.add('hidden');
+            }
+
+            document.getElementById('splitVisualCaption').innerText = q.caption || 'Look closely at the visual clue!';
+            document.getElementById('splitStepIndicator').innerText = `Question ${currentSplitIndex + 1} of ${currentQuestions.length}`;
+
+            // Button states
+            const prevBtn = document.getElementById('splitPrevBtn');
+            const nextBtn = document.getElementById('splitNextBtn');
+            const submitBtn = document.getElementById('splitSubmitBtn');
+
+            prevBtn.disabled = currentSplitIndex === 0;
+
+            if (currentSplitIndex === currentQuestions.length - 1) {
+                nextBtn.classList.add('hidden');
+                if (!isReviewMode) {
+                    submitBtn.classList.remove('hidden');
+                } else {
+                    submitBtn.classList.add('hidden');
+                }
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+
+            // Focus short answer input if active
+            if (q.type === 'fill' && !isReviewMode) {
+                setTimeout(() => {
+                    const inp = document.getElementById(`input_q_${q.id}`);
+                    if (inp) inp.focus();
+                }, 60);
+            }
+
+            renderNavigatorButtons();
+        }
+
+        function prevSplitQuestion() {
+            if (currentSplitIndex > 0) {
+                currentSplitIndex--;
+                renderSplitStep();
+            }
+        }
+
+        function nextSplitQuestion() {
+            if (currentSplitIndex < currentQuestions.length - 1) {
+                currentSplitIndex++;
+                renderSplitStep();
+            }
+        }
+
+        function handleCustomImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const q = currentQuestions[currentSplitIndex];
+                customTest1Images[q.id] = e.target.result;
+                try {
+                    localStorage.setItem('vocabmaster_t1_images', JSON.stringify(customTest1Images));
+                } catch (err) {
+                    // Storage quota fallback in memory
+                }
+                renderSplitStep();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetCurrentCustomImage() {
+            const q = currentQuestions[currentSplitIndex];
+            delete customTest1Images[q.id];
+            try {
+                localStorage.setItem('vocabmaster_t1_images', JSON.stringify(customTest1Images));
+            } catch (err) {}
+            renderSplitStep();
+        }
+
+        /* ================= 9. TEST 2 & 3 SINGLE-PAGE RENDERING ================= */
+        function renderAllQuestionsSinglePage() {
+            const container = document.getElementById('allQuestionsContainer');
+            container.innerHTML = currentQuestions.map((q, idx) => renderQuestionCardHTML(q, idx)).join('');
+            renderNavigatorButtons();
+        }
+
+        /* ================= 10. UNIFIED QUESTION CARD BUILDER ================= */
+        function renderQuestionCardHTML(q, idx) {
+            const qNum = idx + 1;
+            const isAnswered = isQuestionAnswered(q);
+            const userVal = userAnswers[q.id];
+
+            // Optional Section Banner & Reading Passage (for Tests 2 & 3)
+            let preCardHTML = '';
+            if (q.sectionHeader && activeTestIndex !== 1) {
+                preCardHTML += `
+                    <div class="${idx > 0 ? 'pt-4' : ''}">
+                        <div class="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-bookmark text-indigo-400"></i>
+                            <span>${escapeHTML(q.sectionHeader)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            if (q.readingPassage && activeTestIndex !== 1) {
+                preCardHTML += `
+                    <div class="bg-indigo-50/90 border-2 border-indigo-200 rounded-2xl p-5 space-y-2 card-shadow">
+                        <div class="text-xs font-extrabold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-open"></i> Reading Passage
+                        </div>
+                        <p class="text-sm sm:text-base font-medium text-slate-800 leading-relaxed">
+                            "${escapeHTML(q.readingPassage)}"
+                        </p>
+                    </div>
+                `;
+            }
+
+            let contentHTML = '';
+
+            // A. Multiple Choice (Clean radio-style cards avoiding multi-click bugs)
+            if (q.type === 'mc') {
+                const letters = ['A', 'B', 'C', 'D'];
+                const gridCols = q.options.length === 2 ? 'sm:grid-cols-2' : 'grid-cols-1';
+                contentHTML = `
+                    <div class="grid ${gridCols} gap-2.5 pt-2">
+                        ${q.options.map((opt, optIdx) => {
+                            const isSelected = userVal === opt;
+                            let btnStyle = isSelected 
+                                ? 'border-indigo-600 bg-indigo-50 text-indigo-900 shadow-sm' 
+                                : 'border-slate-200 hover:border-indigo-300 hover:bg-slate-50/70 bg-white text-slate-700';
+
+                            let iconBadge = isSelected
+                                ? 'bg-indigo-600 text-white border-indigo-600'
+                                : 'bg-slate-100 text-slate-500 border-slate-200';
+
+                            if (isReviewMode) {
+                                if (opt === q.correct) {
+                                    btnStyle = 'border-emerald-600 bg-emerald-50 text-emerald-900 font-bold';
+                                    iconBadge = 'bg-emerald-600 text-white border-emerald-600';
+                                } else if (isSelected && opt !== q.correct) {
+                                    btnStyle = 'border-rose-500 bg-rose-50 text-rose-900';
+                                    iconBadge = 'bg-rose-500 text-white border-rose-500';
+                                } else {
+                                    btnStyle = 'border-slate-200 bg-white text-slate-400 opacity-75';
+                                }
+                            }
+
+                            return `
+                                <button type="button" ${isReviewMode ? 'disabled' : ''} onclick="selectMCOption(${q.id}, ${optIdx})" class="btn-interact p-3.5 rounded-xl border-2 text-left font-semibold text-sm flex items-center gap-3 ${btnStyle}">
+                                    <span class="w-7 h-7 rounded-lg border text-xs font-extrabold flex items-center justify-center shrink-0 ${iconBadge}">
+                                        ${letters[optIdx]}
+                                    </span>
+                                    <span class="flex-1">${escapeHTML(opt)}</span>
+                                    ${isReviewMode && opt === q.correct ? '<i class="fa-solid fa-circle-check text-emerald-600"></i>' : ''}
+                                    ${isReviewMode && isSelected && opt !== q.correct ? '<i class="fa-solid fa-circle-xmark text-rose-500"></i>' : ''}
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+            // B. Short Answer (Press Enter to save & move to next question)
+            else if (q.type === 'fill') {
+                const isCorrectInReview = isReviewMode ? checkSingleQuestionCorrect(q) : false;
+                let inputStyle = 'border-slate-200 focus:border-indigo-600 bg-white text-indigo-900';
+                if (isReviewMode) {
+                    inputStyle = isCorrectInReview
+                        ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
+                        : 'border-rose-500 bg-rose-50 text-rose-900';
+                }
+
+                contentHTML = `
+                    <div class="max-w-xl pt-2 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label for="input_q_${q.id}" class="text-xs font-bold uppercase tracking-wider text-slate-400">
+                                Type your answer in English:
+                            </label>
+                            ${!isReviewMode ? '<span class="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">Press Enter &crarr; for Next</span>' : ''}
+                        </div>
+                        <input ${isReviewMode ? 'disabled' : ''} type="text" id="input_q_${q.id}" value="${escapeHTML(userVal || '')}" oninput="handleFillInput(${q.id}, this.value)" onkeydown="handleFillKeyDown(event, ${idx})" placeholder="Type your answer here..." autocomplete="off" class="w-full border-2 rounded-xl px-4 py-3 text-base font-bold focus:outline-none shadow-sm transition ${inputStyle}">
+                    </div>
+                `;
+            }
+
+            // Detailed Review & Correction Box (Shown after submission)
+            let reviewFeedbackBox = '';
+            if (isReviewMode) {
+                const isCorrect = checkSingleQuestionCorrect(q);
+                const studentDisplay = getStudentAnswerDisplay(q);
+                const correctDisplay = getCorrectAnswerDisplay(q);
+
+                reviewFeedbackBox = `
+                    <div class="mt-4 p-4 rounded-2xl border ${isCorrect ? 'bg-emerald-50/80 border-emerald-200' : 'bg-rose-50/80 border-rose-200'} space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs font-extrabold flex items-center gap-1.5 ${isCorrect ? 'text-emerald-700' : 'text-rose-700'}">
+                                <i class="fa-solid ${isCorrect ? 'fa-circle-check text-base' : 'fa-circle-xmark text-base'}"></i>
+                                ${isCorrect ? 'Correct! (+1 Point)' : 'Needs Correction (0 Points)'}
+                            </span>
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-white border ${isCorrect ? 'border-emerald-200 text-emerald-800' : 'border-rose-200 text-rose-800'}">
+                                Answer Key: ${escapeHTML(correctDisplay)}
+                            </span>
+                        </div>
+                        ${!isCorrect ? `
+                            <p class="text-xs text-rose-700 font-semibold">
+                                Your Answer: <span class="underline">${escapeHTML(studentDisplay || '(No answer provided)')}</span>
+                            </p>
+                        ` : ''}
+                        <p class="text-xs text-slate-600 font-medium pt-1 border-t ${isCorrect ? 'border-emerald-200/60' : 'border-rose-200/60'}">
+                            <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> ${escapeHTML(q.explanation || '')}
+                        </p>
+                    </div>
+                `;
+            }
+
+            let cardBorderClass = isAnswered ? 'border-indigo-200' : 'border-slate-200';
+            if (isReviewMode) {
+                cardBorderClass = checkSingleQuestionCorrect(q) ? 'border-emerald-400' : 'border-rose-400';
+            }
+
+            const topBadgeText = q.groupBadge ? `${q.groupBadge} · Q${qNum}` : `Question ${qNum} · ${q.badge}`;
+
+            return `
+                ${preCardHTML}
+                <div id="q_card_${qNum}" class="bg-white border-2 ${cardBorderClass} rounded-[20px] p-5 sm:p-6 card-shadow space-y-4 transition-colors">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full border border-indigo-100">
+                            ${escapeHTML(topBadgeText)}
+                        </span>
+                        <span id="q_status_badge_${q.id}" class="text-xs font-bold ${isAnswered ? 'text-emerald-600' : 'text-slate-400'}">
+                            ${isAnswered ? '<i class="fa-solid fa-circle-check mr-1"></i>Answered' : 'Unanswered'}
+                        </span>
+                    </div>
+
+                    <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">${escapeHTML(q.question)}</h3>
+
+                    ${contentHTML}
+
+                    ${reviewFeedbackBox}
+                </div>
+            `;
+        }
+
+        /* ================= 11. INPUT HANDLERS (NO RE-RENDER INPUT LOSS) ================= */
+        function selectMCOption(qId, optIdx) {
+            if (isReviewMode) return;
+            const q = currentQuestions.find(item => item.id === qId);
+            if (!q) return;
+            userAnswers[qId] = q.options[optIdx];
+
+            if (activeTestIndex === 1) {
+                renderSplitStep();
+            } else {
+                refreshSingleQuestionCard(qId);
+            }
+            updateProgressAndNavigator();
+        }
+
+        function selectTFOption(qId, val) {
+            if (isReviewMode) return;
+            userAnswers[qId] = val;
+
+            if (activeTestIndex === 1) {
+                renderSplitStep();
+            } else {
+                refreshSingleQuestionCard(qId);
+            }
+            updateProgressAndNavigator();
+        }
+
+        function selectMatchDropOption(qId, subId, val) {
+            if (isReviewMode) return;
+            let pairs = userAnswers[qId] ? { ...userAnswers[qId] } : {};
+            if (val) pairs[subId] = val;
+            else delete pairs[subId];
+            userAnswers[qId] = pairs;
+
+            updateSingleCardStatusBadge(qId);
+            updateProgressAndNavigator();
+        }
+
+        function handleFillInput(qId, val) {
+            if (isReviewMode) return;
+            userAnswers[qId] = val;
+            updateSingleCardStatusBadge(qId);
+            updateProgressAndNavigator();
+        }
+
+        function handleFillKeyDown(e, qIdx) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (isReviewMode) return;
+
+                // Test 1: Advance to next step in split screen
+                if (activeTestIndex === 1) {
+                    if (currentSplitIndex < currentQuestions.length - 1) {
+                        nextSplitQuestion();
+                    } else {
+                        submitQuiz();
+                    }
+                } 
+                // Test 2 & 3: Smooth scroll & focus next question
+                else {
+                    const nextIdx = qIdx + 1;
+                    if (nextIdx < currentQuestions.length) {
+                        const nextQ = currentQuestions[nextIdx];
+                        scrollToQuestion(nextIdx + 1);
+                        const nextInput = document.getElementById(`input_q_${nextQ.id}`);
+                        if (nextInput) {
+                            setTimeout(() => nextInput.focus(), 250);
+                        }
+                    } else {
+                        // On question 20, blur input and scroll to submit button
+                        e.target.blur();
+                        document.getElementById('singlePageSubmitWrapper').scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            }
+        }
+
+        function refreshSingleQuestionCard(qId) {
+            const idx = currentQuestions.findIndex(q => q.id === qId);
+            if (idx === -1) return;
+            const cardEl = document.getElementById(`q_card_${idx + 1}`);
+            if (cardEl) {
+                cardEl.outerHTML = renderQuestionCardHTML(currentQuestions[idx], idx);
+            }
+        }
+
+        function updateSingleCardStatusBadge(qId) {
+            const q = currentQuestions.find(item => item.id === qId);
+            if (!q) return;
+            const answered = isQuestionAnswered(q);
+            const badge = document.getElementById(`q_status_badge_${qId}`);
+            if (badge) {
+                badge.className = `text-xs font-bold ${answered ? 'text-emerald-600' : 'text-slate-400'}`;
+                badge.innerHTML = answered ? '<i class="fa-solid fa-circle-check mr-1"></i>Answered' : 'Unanswered';
+            }
+        }
+
+        /* ================= 12. QUICK QUESTION NAVIGATOR & PROGRESS ================= */
+        function isQuestionAnswered(q) {
+            const val = userAnswers[q.id];
+            if (!val) return false;
+            return String(val).trim().length > 0;
+        }
+
+        function renderNavigatorButtons() {
+            const nav = document.getElementById('navigatorButtons');
+            const label = document.getElementById('navigatorTitleLabel');
+            if (label) {
+                label.innerHTML = `<i class="fa-solid fa-grid-2 text-indigo-600"></i> Question Navigator (1–${currentQuestions.length})`;
+            }
+            nav.className = currentQuestions.length <= 10 ? 'grid grid-cols-5 sm:grid-cols-10 gap-1.5' : 'grid grid-cols-10 gap-1.5';
+
+            nav.innerHTML = currentQuestions.map((q, idx) => {
+                const qNum = idx + 1;
+                const answered = isQuestionAnswered(q);
+                const isCurrentSplit = (activeTestIndex === 1 && currentSplitIndex === idx);
+
+                let btnClass = 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200';
+                if (isReviewMode) {
+                    const correct = checkSingleQuestionCorrect(q);
+                    btnClass = correct
+                        ? 'bg-emerald-600 text-white border border-emerald-600'
+                        : 'bg-rose-500 text-white border border-rose-500';
+                } else if (answered) {
+                    btnClass = 'bg-indigo-600 text-white border border-indigo-600';
+                }
+
+                if (isCurrentSplit) {
+                    btnClass += ' ring-2 ring-amber-400 ring-offset-1';
+                }
+
+                return `
+                    <button type="button" onclick="handleNavigatorJump(${idx})" class="w-7 h-7 rounded-lg text-[11px] font-bold transition flex items-center justify-center ${btnClass}" title="Jump to Question ${qNum}">
+                        ${qNum}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function handleNavigatorJump(idx) {
+            if (activeTestIndex === 1) {
+                currentSplitIndex = idx;
+                renderSplitStep();
+            } else {
+                scrollToQuestion(idx + 1);
+            }
+        }
+
+        function updateProgressAndNavigator() {
+            let answeredCount = 0;
+            currentQuestions.forEach(q => {
+                if (isQuestionAnswered(q)) answeredCount++;
+            });
+
+            document.getElementById('quizProgressText').innerText = `${answeredCount} / ${currentQuestions.length} Answered`;
+            const pct = (answeredCount / currentQuestions.length) * 100;
+            document.getElementById('quizProgressBar').style.width = `${pct}%`;
+
+            renderNavigatorButtons();
+        }
+
+        function scrollToQuestion(qNum) {
+            const el = document.getElementById(`q_card_${qNum}`);
+            if (el) {
+                const offset = 88;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = el.getBoundingClientRect().top;
+                const offsetPosition = (elementRect - bodyRect) - offset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            }
+        }
+
+        function confirmExitQuiz() {
+            if (isReviewMode) {
+                switchView('studentPortal');
+                return;
+            }
+            showCustomDialog({
+                title: 'Leave Practice Test?',
+                message: 'Your current answers in this test have not been submitted yet. Are you sure you want to return to the Student Portal?',
+                confirmText: 'Leave Test',
+                isDestructive: true,
+                onConfirm: () => switchView('studentPortal')
+            });
+        }
+
+        /* ================= 13. SUBMISSION, GRADING & REVIEW MODE ================= */
+        function submitQuiz() {
+            let unanswered = 0;
+            currentQuestions.forEach(q => {
+                if (!isQuestionAnswered(q)) unanswered++;
+            });
+
+            if (unanswered > 0) {
+                showCustomDialog({
+                    title: `${unanswered} Question${unanswered > 1 ? 's' : ''} Unanswered`,
+                    message: `You still have ${unanswered} unanswered question(s). Do you want to submit your test now anyway?`,
+                    confirmText: 'Submit Anyway',
+                    isDestructive: false,
+                    onConfirm: () => finalizeAndGradeQuiz()
+                });
+            } else {
+                finalizeAndGradeQuiz();
+            }
+        }
+
+        function finalizeAndGradeQuiz() {
+            let score = 0;
+            const total = currentQuestions.length;
+            currentQuestions.forEach(q => {
+                if (checkSingleQuestionCorrect(q)) score++;
+            });
+
+            const percentage = Math.round((score / total) * 100);
+            const titles = [
+                'Test 1: Look, Think & Choose',
+                'Test 2: Grammar Detective',
+                'Test 3: Super Challenge'
+            ];
+            const testTitle = titles[activeTestIndex - 1];
+
+            const record = {
+                id: Date.now(),
+                studentName: studentProfile.name,
+                studentClass: studentProfile.class,
+                testIndex: activeTestIndex,
+                testTitle: testTitle,
+                score: score,
+                total: total,
+                percentage: percentage,
+                synced: Boolean(teacherWebAppUrl),
+                timestamp: new Date().toISOString(),
+                dateStr: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            saveSubmissionRecord(record);
+
+            document.getElementById('resultScore').innerText = `${score} / ${total}`;
+            document.getElementById('resultPercentage').innerText = `${percentage}% Correct`;
+            document.getElementById('bannerScoreNum').innerText = score;
+            document.getElementById('bannerScoreTotal').innerText = `/ ${total}`;
+
+            const badgeIcon = document.getElementById('resultBadgeIcon');
+            const titleEl = document.getElementById('resultTitle');
+            const subEl = document.getElementById('resultSubtitle');
+
+            if (percentage >= 80) {
+                badgeIcon.innerText = '🏆';
+                titleEl.innerText = 'Outstanding Job!';
+                subEl.innerText = 'You have mastered Present Simple & Present Continuous!';
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+                }
+            } else if (percentage >= 50) {
+                badgeIcon.innerText = '🌟';
+                titleEl.innerText = 'Well Done!';
+                subEl.innerText = `Good effort! Review your answers below to aim for ${total}/${total}.`;
+            } else {
+                badgeIcon.innerText = '📚';
+                titleEl.innerText = 'Keep Practicing!';
+                subEl.innerText = 'Click Review Answers below to check the grammar rules and clues.';
+            }
+
+            openModal('resultModal');
+            syncToGoogleSheet(record);
+        }
+
+        function normalizeSentence(str) {
+            return String(str)
+                .toLowerCase()
+                .replace(/’/g, "'")
+                .replace(/[.!?,"]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function checkSingleQuestionCorrect(q) {
+            const userAns = userAnswers[q.id];
+            if (!userAns) return false;
+
+            if (q.type === 'mc') {
+                return userAns === q.correct;
+            } else if (q.type === 'fill') {
+                const clean = normalizeSentence(userAns);
+                return q.correct.some(c => normalizeSentence(c) === clean);
+            }
+            return false;
+        }
+
+        function getStudentAnswerDisplay(q) {
+            const val = userAnswers[q.id];
+            if (!val) return '';
+            return String(val);
+        }
+
+        function getCorrectAnswerDisplay(q) {
+            if (q.type === 'mc') return q.correct;
+            if (q.type === 'fill') {
+                // Capitalize sentence corrections cleanly for display
+                const ans = q.correct[0];
+                if (q.id >= 17 && activeTestIndex === 2) {
+                    return ans.charAt(0).toUpperCase() + ans.slice(1) + '.';
+                }
+                if (q.id >= 16 && q.id <= 18 && activeTestIndex === 3) {
+                    return ans.charAt(0).toUpperCase() + ans.slice(1) + '.';
+                }
+                return ans;
+            }
+            return '';
+        }
+
+        function getCorrectAnswerDisplay(q) {
+            if (q.type === 'mc') return q.correct;
+            if (q.type === 'tf') return q.correct === 'T' ? 'True (T)' : 'False (F)';
+            if (q.type === 'fill') return q.correct[0];
+            if (q.type === 'match_drop') {
+                return q.items.map(sub => `${sub.id}-${sub.correct}`).join(', ');
+            }
+            return '';
+        }
+
+        function enableReviewMode() {
+            isReviewMode = true;
+            document.getElementById('reviewModeBadge').classList.remove('hidden');
+            document.getElementById('reviewSummaryBanner').classList.remove('hidden');
+
+            if (activeTestIndex === 1) {
+                currentSplitIndex = 0;
+                renderSplitStep();
+            } else {
+                document.getElementById('singlePageSubmitWrapper').classList.add('hidden');
+                renderAllQuestionsSinglePage();
+            }
+            renderNavigatorButtons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function retryActiveQuiz() {
+            startTest(activeTestIndex);
+        }
+
+        function syncToGoogleSheet(record) {
+            const syncNotice = document.getElementById('sheetSyncNotice');
+            if (!teacherWebAppUrl) {
+                syncNotice.classList.remove('hidden');
+                syncNotice.className = 'text-xs font-semibold p-3 rounded-xl max-w-xs mx-auto bg-amber-50 text-amber-700 border border-amber-200';
+                syncNotice.innerHTML = '<i class="fa-solid fa-database mr-1"></i> Saved to local Teacher Dashboard.';
+                return;
+            }
+
+            syncNotice.classList.remove('hidden');
+            syncNotice.className = 'text-xs font-semibold p-3 rounded-xl max-w-xs mx-auto bg-indigo-50 text-indigo-700 border border-indigo-200';
+            syncNotice.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Syncing score to Google Sheet...';
+
+            fetch(teacherWebAppUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(record)
+            }).then(() => {
+                syncNotice.className = 'text-xs font-semibold p-3 rounded-xl max-w-xs mx-auto bg-emerald-50 text-emerald-700 border border-emerald-200';
+                syncNotice.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Synced to Teacher Google Sheet!';
+            }).catch(() => {
+                syncNotice.className = 'text-xs font-semibold p-3 rounded-xl max-w-xs mx-auto bg-rose-50 text-rose-700 border border-rose-200';
+                syncNotice.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Offline mode: Saved locally.';
+            });
+        }
+
+        /* ================= 14. TEACHER ANALYTICS & TABLE ================= */
+        function saveSubmissionRecord(record) {
+            let history = JSON.parse(localStorage.getItem('vocabmaster_history') || '[]');
+            history.unshift(record);
+            localStorage.setItem('vocabmaster_history', JSON.stringify(history));
+            document.getElementById('headerSubCount').innerText = history.length;
+        }
+
+        function updateTeacherAnalytics() {
+            const history = JSON.parse(localStorage.getItem('vocabmaster_history') || '[]');
+            document.getElementById('headerSubCount').innerText = history.length;
+
+            const totalSubs = history.length;
+            document.getElementById('metricSubmissions').innerText = totalSubs;
+
+            if (totalSubs === 0) {
+                document.getElementById('metricAverage').innerText = '0%';
+                document.getElementById('metricHighest').innerText = '0%';
+                document.getElementById('metricPassRate').innerText = '0%';
+            } else {
+                const totalPct = history.reduce((acc, curr) => acc + curr.percentage, 0);
+                const avg = Math.round(totalPct / totalSubs);
+                document.getElementById('metricAverage').innerText = `${avg}%`;
+
+                const maxPct = Math.max(...history.map(h => h.percentage));
+                document.getElementById('metricHighest').innerText = `${maxPct}%`;
+
+                const passed = history.filter(h => h.percentage >= 50).length;
+                const passRate = Math.round((passed / totalSubs) * 100);
+                document.getElementById('metricPassRate').innerText = `${passRate}%`;
+            }
+
+            // Populate Class Dropdown dynamically
+            const classSelect = document.getElementById('teacherClassFilter');
+            const currentClassVal = classSelect.value;
+            const uniqueClasses = [...new Set(history.map(h => h.studentClass).filter(Boolean))].sort();
+            classSelect.innerHTML = `<option value="ALL">All Classes</option>` +
+                uniqueClasses.map(c => `<option value="${escapeHTML(c)}">Class ${escapeHTML(c)}</option>`).join('');
+            if (uniqueClasses.includes(currentClassVal)) {
+                classSelect.value = currentClassVal;
+            }
+
+            filterTeacherTable();
+        }
+
+        function filterTeacherTable() {
+            const history = JSON.parse(localStorage.getItem('vocabmaster_history') || '[]');
+            const searchVal = document.getElementById('teacherSearchInput').value.toLowerCase().trim();
+            const testFilter = document.getElementById('teacherTestFilter').value;
+            const classFilter = document.getElementById('teacherClassFilter').value;
+
+            const filtered = history.filter(item => {
+                const matchesSearch = item.studentName.toLowerCase().includes(searchVal);
+                const matchesTest = testFilter === 'ALL' || item.testIndex.toString() === testFilter;
+                const matchesClass = classFilter === 'ALL' || item.studentClass === classFilter;
+                return matchesSearch && matchesTest && matchesClass;
+            });
+
+            const tbody = document.getElementById('teacherTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-slate-400 text-xs font-semibold">No student submission records found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(item => `
+                <tr class="hover:bg-slate-50/80 transition">
+                    <td class="py-3.5 px-4 font-bold text-slate-800">${escapeHTML(item.studentName)}</td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-600">${escapeHTML(item.studentClass)}</td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-600">${escapeHTML(item.testTitle)}</td>
+                    <td class="py-3.5 px-4 text-center font-black text-indigo-600">${item.score}/${item.total || 20}</td>
+                    <td class="py-3.5 px-4 text-center font-bold ${item.percentage >= 80 ? 'text-emerald-600' : item.percentage >= 50 ? 'text-amber-500' : 'text-rose-500'}">${item.percentage}%</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold ${item.synced || teacherWebAppUrl ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-slate-100 text-slate-500'}">
+                            ${item.synced || teacherWebAppUrl ? 'Synced' : 'Local'}
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-right text-xs text-slate-400 font-medium">${escapeHTML(item.dateStr)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function exportTeacherCSV() {
+            const history = JSON.parse(localStorage.getItem('vocabmaster_history') || '[]');
+            if (history.length === 0) {
+                showCustomDialog({
+                    title: 'No Data to Export',
+                    message: 'There are currently no student submissions recorded to export.',
+                    confirmText: 'OK',
+                    showCancel: false
+                });
+                return;
+            }
+            const headers = ['Student Name', 'Class', 'Test Title', 'Score', 'Total', 'Percentage', 'Submitted At'];
+            const rows = history.map(r => [
+                `"${String(r.studentName).replace(/"/g, '""')}"`,
+                `"${String(r.studentClass).replace(/"/g, '""')}"`,
+                `"${String(r.testTitle).replace(/"/g, '""')}"`,
+                r.score,
+                r.total || 20,
+                `${r.percentage}%`,
+                `"${r.dateStr}"`
+            ]);
+            const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `VocabMaster_Lesson4_Results_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function updateBestScores() {
+            const history = JSON.parse(localStorage.getItem('vocabmaster_history') || '[]');
+            const t1 = history.filter(h => h.testIndex === 1).map(h => h.score);
+            const t2 = history.filter(h => h.testIndex === 2).map(h => h.score);
+            const t3 = history.filter(h => h.testIndex === 3).map(h => h.score);
+
+            document.getElementById('test1BestScore').innerText = t1.length > 0 ? `${Math.max(...t1)} / 10` : '-- / 10';
+            document.getElementById('test2BestScore').innerText = t2.length > 0 ? `${Math.max(...t2)} / 20` : '-- / 20';
+            document.getElementById('test3BestScore').innerText = t3.length > 0 ? `${Math.max(...t3)} / 20` : '-- / 20';
+        }
+
+        function clearTeacherHistory() {
+            showCustomDialog({
+                title: 'Clear All Submission Records?',
+                message: 'This will remove all locally stored student results from this browser. Data already synced to your Google Sheet will remain safe.',
+                confirmText: 'Clear Local Data',
+                isDestructive: true,
+                onConfirm: () => {
+                    localStorage.removeItem('vocabmaster_history');
+                    updateTeacherAnalytics();
+                    updateBestScores();
+                }
+            });
+        }
+
+        function escapeHTML(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+    </script>
+</body>
+</html>
